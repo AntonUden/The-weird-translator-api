@@ -87,6 +87,7 @@ export default class Server {
 							let textResult = await translator.translate(text);
 
 							if(req.query.plaintext != undefined) {
+								res.send(textResult); 
 								return;
 							}
 
