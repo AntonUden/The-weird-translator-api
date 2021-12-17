@@ -57,6 +57,7 @@ export default class Server {
 
 		this.app.post('/:translator/translate', async (req, res) => {
 			let translator: Translator = null;
+
 			if(req.params.translator != null) {
 				this.translators.forEach(t => {
 					if(t.getTranslatorName() == req.params.translator) {
@@ -84,6 +85,11 @@ export default class Server {
 					} else {
 						try {
 							let textResult = await translator.translate(text);
+
+							if(req.query.plaintext != undefined) {
+								return;
+							}
+
 							result = {
 								success: true,
 								result: textResult

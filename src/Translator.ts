@@ -46,7 +46,7 @@ export class Translator {
 
 	public async translate(text: string): Promise<string> {
 		let result = await this.page.evaluate((textToTranslate) => {
-			return eval("translate(\"" + textToTranslate.replace(/"/g, '\\"') + "\");");
+			return eval("translate(\"" + textToTranslate.replace(/"/g, '\\"').replace(/[\r\n]+/g,"\\n") + "\");");
 		}, text);
 
 		return result;
