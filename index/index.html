@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Translator API Documentation</title>
+</head>
+
+<body>
+	<h1>Translator API Documentation</h1>
+	<p>
+		<h2>Get translators</h2>
+		http get: <a href="/get_translators"><code>/get_translators</code></a><br>
+		Returns a json list of all translators
+	</p>
+
+	<p>
+		<h2>Check if translator is ready</h2>
+		http get: <a href="/:translator/is_ready"><code>/:translator/is_ready</code></a><br>
+		Check if translator is ready to use
+	</p>
+
+	<p>
+		<h2>Translate</h2>
+		http post: <a href="/:translator/translate"><code>/:translator/translate</code></a><br>
+		Send the text to translate as plain text post body.<br>
+		Returns json with translated text or an error if the test is longer than 65535 characters
+	</p>
+</body>
+
+</html>
