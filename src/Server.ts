@@ -20,6 +20,9 @@ export default class Server {
 
 		this.app.use(require('body-parser').text({ type: "*/*" }));
 		this.app.use(require('cors')());
+		this.app.use(require('helmet')())
+
+		this.app.disable('x-powered-by');
 
 		this.http = require("http").Server(this.app);
 		this.app.use('/', express.static(__dirname + '/../index'));
@@ -83,7 +86,7 @@ export default class Server {
 							let textResult = await translator.translate(text);
 							result = {
 								success: true,
-								error: textResult
+								result: textResult
 							}
 						} catch(err) {
 							console.error("Failed to translate text using translator " + translator.getTranslatorName());
