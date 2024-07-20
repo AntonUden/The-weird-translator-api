@@ -9,9 +9,6 @@ lib-cov
 
 yarn.lock
 
-
-package-lock.json
-
 pids
 logs
 results
@@ -20,3 +17,5 @@ node_modules
 npm-debug.log
 
 dist
+
+swagger.json

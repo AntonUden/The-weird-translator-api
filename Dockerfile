@@ -1,4 +1,4 @@
-FROM debian:9
+FROM debian:bookworm
 
 RUN apt-get update -yq
 RUN apt-get install curl gnupg -yq
@@ -32,4 +32,4 @@ RUN tsc
 
 EXPOSE 8080
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "start-with-swagger"]

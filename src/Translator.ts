@@ -1,54 +1,58 @@
 import * as puppeteer from 'puppeteer';
 import Server from './Server';
+import { cyan } from 'colors';
 
 export class Translator {
-	private translatorName: string;
-	private ready: boolean;
-	private page: puppeteer.Page = null;
-	private _server: Server;
+  private _name: string;
+  private _ready: boolean;
+  private page: puppeteer.Page | null = null;
+  private _server: Server;
 
+  constructor(server: Server, translatorName: string) {
+    this._name = translatorName;
+    this._ready = false;
+    this._server = server;
+  }
 
-	constructor(server: Server, translatorName: string) {
-		this.translatorName = translatorName;
-		this.ready = false;
-		this._server = server;
-	}
+  public async init() {
+    if (this.ready) {
+      return;
+    }
 
-	public async init() {
-		if (this.ready) {
-			return;
-		}
+    console.log("Translator " + cyan(this.name) + " is starting...");
 
-		console.log("Translator " + this.translatorName + " is starting...");
+    const url: string = "https://lingojam.com/" + this.name;
+    console.log("URL is " + url);
 
-		let url: string = "https://lingojam.com/" + this.translatorName;
-		console.log("URL is " + url);
+    this.page = await this._server.browser.newPage();
 
-		this.page = await this._server.browser.newPage();
+    await this.page.goto(url);
 
-		await this.page.goto(url);
+    this._ready = true;
+    console.log("Translator " + cyan(this.name) + " is ready!");
 
-		this.ready = true;
-		console.log("Translator " + this.translatorName + " is ready!");
+    console.log("Running test on " + cyan(this.name));
+    const test = await this.translate("Hello world!");
+    console.log("(Hello World! test): " + cyan(test) + " from " + cyan(this.name));
+  }
 
-		console.log("Running test on " + this.translatorName);
-		let test = await this.translate("Hello world!");
-		console.log("(Hello World! test): " + test + " from " + this.translatorName);
-	}
+  public get ready(): boolean {
+    return this._ready;
+  }
 
-	public isReady(): boolean {
-		return this.ready;
-	}
+  public get name(): string {
+    return this._name;
+  }
 
-	public getTranslatorName(): string {
-		return this.translatorName;
-	}
+  public async translate(text: string): Promise<string> {
+    if (!this.ready) {
+      return text;
+    }
 
-	public async translate(text: string): Promise<string> {
-		let result = await this.page.evaluate((textToTranslate) => {
-			return eval("translate(\"" + textToTranslate.replace(/"/g, '\\"').replace(/[\r\n]+/g,"\\n") + "\");");
-		}, text);
+    const result = await this.page!.evaluate((textToTranslate) => {
+      return eval("translate(\"" + textToTranslate.replace(/"/g, '\\"').replace(/[\r\n]+/g, "\\n") + "\");");
+    }, text);
 
-		return result;
-	}
+    return result;
+  }
 }

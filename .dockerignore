@@ -1,4 +1,4 @@
-package-lock.json
+.vscode
 .github
 .gitignore
 CODE_OF_CONDUCT.md
@@ -9,3 +9,4 @@ README.md
 LICENSE
 yarn.lock
 dist
+swagger.json
